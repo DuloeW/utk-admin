@@ -3,38 +3,44 @@
         <div class="data-book">
             <label for="">Judul Buku</label>
             <span>
-                <p>Muninem</p>
+                <p>{{ judul }}</p>
             </span>
         </div>
         <div class="data-book">
             <label for="">Kode Buku</label>
             <span>
-                <p>9381</p>
+                <p>{{ kode }}</p>
             </span>
         </div>
         <div class="data-book">
             <label for="">Kategori</label>
             <span>
-                <p>Pendidikan</p>
+                <p>{{ kategori }}</p>
             </span>
         </div>
         <div class="data-book">
             <label for="">Tahun Rilis</label>
             <span>
-                <p>12/10/2005</p>
+                <p>{{ tahun }}</p>
             </span>
         </div>
         <div class="data-book">
             <label for="">Deskripsi</label>
             <span class="">
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloremque et molestiae, nisi fugit veniam iste voluptatem cumque, nam debitis non repudiandae nobis ipsa rerum dolore explicabo laborum tenetur perferendis magni quae nihil earum doloribus! Sed non rem accusamus vitae veritatis, explicabo provident laborum accusantium corporis saepe voluptate tenetur commodi ad, fuga nesciunt cupiditate impedit numquam nisi repudiandae odit quam odio? Iste, eos aliquid, temporibus fuga quaerat sed perspiciatis quam iusto rem dicta tenetur quod ullam qui, voluptatibus nam dolores reiciendis dolore distinctio numquam cumque? Recusandae amet earum minus blanditiis autem rerum, ullam reprehenderit commodi, minima quam tempore reiciendis! Dolores, neque.</p>
+                <p>{{ deskripsi }}</p>
             </span>
         </div>
     </div>
 </template>
 <script>
 export default {
-
+    props: {
+        judul: String,
+        kode: String,
+        kategori: String,
+        tahun: String,
+        deskripsi: String
+    }
 }
 </script>
 <style scoped>

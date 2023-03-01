@@ -6,11 +6,11 @@
         <form class="w-full h-full p-4 overflow-hidden flex flex-col justify-center items-center">
             <div class="input-data">
                 <label for="">Nama Panjang</label>
-                <input type="text" maxlength="50" minlength="10" required>
+                <input v-model="namaPanjang" type="text" maxlength="50" minlength="10" required>
             </div>
             <div class="input-data">
                 <label for="">NISN</label>
-                <input type="number" max="999999999999" min="1000000000" required>
+                <input v-model="nisn" type="number" max="999999999999" min="1000000000" required>
             </div>
             <div class="input-data">
                 <label for="">Tanggal Minjam</label>
@@ -24,16 +24,17 @@
             </div>
             <div class="input-data w-full">
                 <label for="">Jumlah Buku</label>
-                <input type="number" max="2" min="1" required>
+                <input v-model="jumlahBuku" type="number" max="2" min="1" required>
             </div>
             <div class="text-white mt-3">
-                <button type="submit" class="btn-kiri px-2 bg-green-700 rounded">Kirim</button>
+                <button @click="createPeminjam" class="btn-kiri px-2 bg-green-700 rounded">Kirim</button>
                 <input type="reset" value="hapus" class="btn-kanan px-2 bg-red-700 ml-2 rounded">
             </div>
         </form>
     </div>
 </template>
 <script>
+import axios from 'axios';
 import { RouterLink } from 'vue-router';
 import BackButton from '../components/icons/back_button.vue'
 
@@ -45,12 +46,31 @@ export default {
     },
     data() {
         return {
+            namaPanjang: '',
+            nisn: '',
             tglMinjam: '',
-            tglKembali: ''
+            tglKembali: '',
+            jumlahBuku: ''
         }
     },
     components: {
         BackButton
+    },
+    methods: {
+        async createPeminjam() {
+            try {
+                const response = await axios.post('http://localhost:8123/api/v1/peminjam/create', {
+                    namaLengkap: this.namaPanjang,
+                    nisn: this.nisn,
+                    tanggalMinjam: this.tglMinjam,
+                    tanggalKembali: this.tglKembali,
+                    jumlahBuku: this.jumlahBuku
+                })
+                console.log(response.data);
+            } catch (err) {
+                console.error(err.response.data);
+            }
+        }
     },
     computed: {
         getTglKembali() {

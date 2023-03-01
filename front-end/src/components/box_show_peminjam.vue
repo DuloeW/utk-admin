@@ -3,7 +3,7 @@
         <MdPeopleIcon class="text-8xl"/>
         <div class="w-full h-full flex flex-col justify-between p-2">
             <h1 class="text-xl font-serif tracking-widest">Peminjam</h1>
-            <p class="text-[12px]">1 orang</p>
+            <p class="text-[12px]">{{ size }} orang</p>
             <RouterLink to="/detail-peminjam" class="self-end">
                 <a href="" class=" text-xs tracking-[2px] px-3 py-1 bg-green-600 rounded-sm">detail..</a>
             </RouterLink>
@@ -11,6 +11,7 @@
     </div>
 </template>
 <script>
+import axios from 'axios';
 import { RouterLink } from 'vue-router';
 import MdPeopleIcon from 'vue-ionicons/dist/md-people.vue'
 export default {
@@ -18,6 +19,9 @@ export default {
         return {
             RouterLink
         }
+    },
+    props: {
+        size: String
     },
     components: {
         MdPeopleIcon

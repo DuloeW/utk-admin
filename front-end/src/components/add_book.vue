@@ -6,15 +6,15 @@
         <form class="w-full h-full p-4 overflow-hidden flex flex-col justify-center items-center">
             <div class="input-book">
                 <label for="">Judul Buku</label>
-                <input type="text" required>
+                <input v-model="judulBuku" type="text" required>
             </div>
             <div class="input-book">
                 <label for="">Kode Buku</label>
-                <input type="text" maxlength="4" minlength="4" required>
+                <input v-model="kodeBuku" type="text" maxlength="5" minlength="5" required>
             </div>
             <div class="input-book">
                 <label for="">Kategori</label>
-                <select name="" id="">
+                <select v-model="kategori" name="" id="">
                     <option value="pendidikan">Pendidikan</option>
                     <option value="hiburan" selected>Hiburan</option>
                     <option value="berita">Berita</option>
@@ -22,14 +22,14 @@
             </div>
             <div class="input-book">
                 <label for="">Tahun Rilis</label>
-                <input type="date" required>
+                <input v-model="tahunRilis" type="date" required>
             </div>
             <div class="input-book">
                 <label for="">Deskripsi</label>
-                <textarea name="" id="" cols="2" rows="3" required></textarea>
+                <textarea v-model="deskripsi" name="" id="" cols="2" rows="3" required></textarea>
             </div>
             <div class="text-white mt-3">
-                <button type="submit" class="btn-kiri px-2 bg-green-700 rounded">Kirim</button>
+                <button @click="createBook" class="btn-kiri px-2 bg-green-700 rounded">Kirim</button>
                 <input type="reset" value="hapus" class="btn-kanan px-2 bg-red-700 ml-2 rounded">
             </div>
         </form>
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { RouterLink } from 'vue-router';
 import BackButton from '../components/icons/back_button.vue'
 import PendidikanIcon from '../components/icons/student.vue'
@@ -57,7 +58,45 @@ export default {
     },
     data() {
         return {
-
+            judulBuku: '',
+            kodeBuku: '',
+            kategori: '',
+            tahunRilis: '',
+            deskripsi: '',
+            kategoriInt: ''
+        }
+    },
+    methods: {
+        async createBook() {
+            try {
+                this.convertKategoriToInt()
+                const response = await axios.post('http://localhost:8123/api/v1/buku/create', {
+                    judulBuku: this.judulBuku,
+                    kodeBuku: this.kodeBuku,
+                    kategori: this.kategoriInt,
+                    tahunRilis: this.tahunRilis,
+                    deskripsi: this.deskripsi
+                });
+                console.log(response.data);
+            } catch (error) {
+                console.error(error.response.data);
+            }
+        },
+        convertKategoriToInt() {
+            switch (this.kategori) {
+                case "pendidikan":
+                    this.kategoriInt = 2
+                    break;
+                case "hiburan":
+                    this.kategoriInt = 0
+                    break
+                case "berita":
+                    this.kategoriInt = 1
+                    break
+                default:
+                    this.kategoriInt = 2
+                    break;
+            }
         }
     }
 }
@@ -65,7 +104,6 @@ export default {
 
 
 <style scoped>
-
 label {
     font-weight: bolder;
     letter-spacing: 2px;
@@ -97,6 +135,7 @@ textarea {
 .btn-kiri {
     animation: hideSlideRight 5s ease-in forwards;
 }
+
 .btn-kanan {
     animation: hideSlideLeft 5s ease-in forwards;
 }
@@ -104,15 +143,19 @@ textarea {
 .input-book:nth-child(1) {
     animation: fadeIn 1s ease-in forwards;
 }
+
 .input-book:nth-child(2) {
     animation: fadeIn 2s ease-in forwards;
 }
+
 .input-book:nth-child(3) {
     animation: fadeIn 3s ease-in forwards;
 }
+
 .input-book:nth-child(4) {
     animation: fadeIn 4s ease-in forwards;
 }
+
 .input-book:nth-child(5) {
     animation: fadeIn 5s ease-in forwards;
 }
@@ -122,30 +165,34 @@ textarea {
         transform: translateX(-100%);
         opacity: 0;
     }
+
     to {
         transform: translateX(0);
         opacity: 1;
     }
 }
+
 @keyframes hideSlideLeft {
     from {
         transform: translateX(100%);
         opacity: 0;
     }
+
     to {
         transform: translateX(0);
         opacity: 1;
     }
 }
+
 @keyframes fadeIn {
-    from{
+    from {
         opacity: 0;
         transform: scale(.5);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
     }
 }
-
 </style>

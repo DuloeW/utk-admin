@@ -24,12 +24,17 @@ public class BukuService {
         .orElseThrow(() -> MessageResponse.idNotFoundException(judul));
     }
 
-    public Boolean checkingBukuExistByName(String judul) {
-        return BukuEntity.findBukuByTitle(judul).isPresent();
+    private Boolean checkingBukuExistByKode(String kode) {
+        return BukuEntity.findBukuByCode(kode).isPresent();
     }
 
-    public Boolean checkingBukuIsExistById(Long id) {
+    private Boolean checkingBukuIsExistById(Long id) {
         return BukuEntity.findBukuById(id).isPresent();
+    }
+
+    public Response getSizeBuku() {
+        Long size = BukuEntity.count();
+        return Response.ok("{\"size\":\""+ size +"\"}").build();
     }
 
     public List<BukuEntity> getAllBuku() {
@@ -38,9 +43,16 @@ public class BukuService {
         .collect(Collectors.toList());
     }
 
+    public List<BukuEntity> getListBukuByTitle(String name) {
+        return BukuEntity.findAllBuku()
+        .stream()
+        .filter(buku -> (buku.judulBuku.toLowerCase().replaceAll("\\s", "").contains(name.toLowerCase())))
+        .collect(Collectors.toList());
+    }
+
     public Response createBuku(BukuBody body) {
         Objects.requireNonNull(body);
-        if(Boolean.FALSE.equals(checkingBukuExistByName(body.judulBuku()))) {
+        if(Boolean.FALSE.equals(checkingBukuExistByKode(body.kodeBuku()))) {
             var buku = body.mapToBukuEntity();
             buku.persist();
             return Response.ok().entity(body).build();
@@ -48,9 +60,9 @@ public class BukuService {
         return Response.status(400).entity("{\"message\":\"BUKU IS EXIST\"}").build();
     }
 
-    public Response updateBuku(BukuEntity entity) {
-        if(Boolean.TRUE.equals(checkingBukuIsExistById(entity.id))) {
-            var buku = getBukuById(entity.id);
+    public Response updateBuku(BukuEntity entity ,Long id) {
+        if(Boolean.TRUE.equals(checkingBukuIsExistById(id))) {
+            var buku = getBukuById(id);
             entity.updateBuku(buku);
             return Response.ok(buku).build();
         }

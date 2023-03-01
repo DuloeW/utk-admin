@@ -32,15 +32,21 @@ public class BukuController {
     }
 
     @GET
-    @Path("/get-judul/{judul}")
-    public BukuEntity getBukuByTitle(@PathParam("judul") String judul) {
-        return bukuService.getBukuByTitle(judul);
+    @Path("/get-size")
+    public Response getBukuByTitle() {
+        return bukuService.getSizeBuku();
     }
 
     @GET
     @Path("/get-all")
     public List<BukuEntity> getAllBuku() {
         return bukuService.getAllBuku();
+    }
+
+    @GET
+    @Path("/get-all/title/{judul}")
+    public List<BukuEntity> getAllBukuByTitle(@PathParam("judul") String judul) {
+        return bukuService.getListBukuByTitle(judul);
     }
 
     @POST
@@ -52,9 +58,9 @@ public class BukuController {
 
     @PUT
     @Transactional
-    @Path("/update")
-    public Response updateBuku(BukuEntity entity) {
-        return bukuService.updateBuku(entity);
+    @Path("/update/{id}")
+    public Response updateBuku(BukuEntity entity, @PathParam("id") Long id) {
+        return bukuService.updateBuku(entity, id);
     }
 
     @DELETE

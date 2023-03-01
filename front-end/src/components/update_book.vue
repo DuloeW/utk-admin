@@ -5,11 +5,11 @@
         </RouterLink>
         <div class="">
             <div class="p-2 w-fit flex justify-center relative mx-auto">
-                <input type="search" name="" size="50" id="" class="text-xs p-4 tracking-[1px] rounded-sm bg-slate-500 border-none outline-none text-white">
-                <button class="h-3/6 bg-blue-500 rounded-sm text-white absolute right-3 top-3 w-[15%] mt-1 mr-1">cari</button>
+                <input v-model="keyword" type="search" name="" size="50" id="" class="text-xs p-4 tracking-[1px] rounded-sm bg-slate-500 border-none outline-none text-white">
+                <button @click="filterBook" class="h-3/6 bg-blue-500 rounded-sm text-white absolute right-3 top-3 w-[15%] mt-1 mr-1">cari</button>
             </div>
         </div>
-        <table class="w-full">
+        <table class="w-full relative">
             <tr>
                 <th>No</th>
                 <th>Judul Buku</th>
@@ -17,21 +17,25 @@
                 <th>Kategori</th>
                 <th class="w-1/12">Update</th>
             </tr>
-            <tr class="text-center">
-                <td>1</td>
-                <td>Memasak Nasi</td>
-                <td>2812</td>
-                <td>Pendidikan</td>
+            <tr v-for="(book, index) in books" class="text-center ">
+                <td>{{ index + 1 }}</td>
+                <td>{{ book.judulBuku }}</td>
+                <td>{{ book.kodeBuku }}</td>
+                <td>{{ book.kategori }}</td>
                 <td>
-                    <RouterLink to="/update-book/1">
+                    <RouterLink :to="`/update-book/${book.id}`">
                         <button class="px-2 py-1 bg-green-700 text-white tracking-[2px] text-sm rounded-md">update</button>
                     </RouterLink>
                 </td>
             </tr>
+            <div v-if="books.length == 0" class="absolute top-0 left-[30%] w-96 h-96 flex justify-center items-center mx-auto">
+                <h2 class="text-5xl font-semibold text-slate-500">Buku Kosong</h2>
+            </div>
         </table>
     </div>
 </template>
 <script>
+import axios from 'axios';
 import { RouterLink } from 'vue-router';
 import BackButton from './icons/back_button.vue'
 export default {
@@ -40,8 +44,37 @@ export default {
             RouterLink
         }
     },
+    data() {
+        return {
+            books: [],
+            keyword: ''
+        }
+    },
     components: {
         BackButton
+    },
+    methods: {
+        getPeminjam() {
+            axios.get('http://localhost:8123/api/v1/buku/get-all', {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => this.books = response.data)
+                .catch(err => console.log(err))
+        },
+        filterBook() {
+            if (this.keyword === '') {
+                return this.books
+            } else {
+                return axios.get(`http://localhost:8123/api/v1/buku/get-all/title/${this.keyword}`)
+                    .then(response => this.books = response.data)
+                    .catch(err => console.log(err))
+            }
+        }
+    },
+    mounted() {
+        this.getPeminjam()
     }
 }
 </script>
@@ -56,6 +89,10 @@ th {
 td {
   padding: 20px;
   background: #eeeeee;
+}
+
+tr {
+    border: 10px solid #F1F5F9;
 }
 
 .main {

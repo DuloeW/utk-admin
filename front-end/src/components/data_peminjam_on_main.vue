@@ -1,11 +1,11 @@
 <template>
     <div class="main w-full h-full bg-slate-100 rounded-xl overflow-y-scroll relative">
         <div class="p-2 w-fit flex justify-center relative mx-auto">
-            <input type="search" name="" id="" size="50"
+            <input v-model="keyword" type="search" name="" id="" size="50"
                 class="text-xs p-4 tracking-[1px] rounded-sm bg-slate-500 border-none outline-none text-white">
-            <button class="h-3/6 bg-blue-500 rounded-sm text-white absolute right-3 top-3 w-[15%] mt-1 mr-1">cari</button>
+            <button @click="filterPeminjam" class="h-3/6 bg-blue-500 rounded-sm text-white absolute right-3 top-3 w-[15%] mt-1 mr-1">cari</button>
         </div>
-        <table class="w-full">
+        <table class="w-full relative">
             <tr>
                 <th>Nama Peminjam</th>
                 <th>Jumlah Buku</th>
@@ -16,9 +16,11 @@
                 <td>{{ p.namaLengkap }}</td>
                 <td>{{ p.jumlahBuku }}</td>
                 <td>{{ p.tanggalKembali }}</td>
-                <td><input type="checkbox" name="" id=""></td>
+                <td><button @click="deletePeminjam(p.id)">&#9989</button></td>
             </tr>
-
+            <div v-if="peminjam.length == 0" class="absolute top-0 left-[30%] w-fit h-96 flex justify-center items-center mx-auto">
+                <h2 class="text-5xl font-semibold text-slate-500">Tidak Ada Peminjam</h2>
+            </div>
         </table>
     </div>
 </template>
@@ -27,21 +29,40 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            peminjam: []
+            peminjam: [],
+            keyword: ''
         }
     },
     methods: {
-        async getPeminjam() {
-            await fetch('http://localhost:5174/api/v1/peminjam/get-all', {
-                mode: 'no-cors',
-                method: 'GET',
+        getPeminjam() {
+            axios.get('http://localhost:8123/api/v1/peminjam/get-all', {
                 headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json"
                 }
-            }).then(response => response.json())
-            .then(data => console.log(data))
-            .catch(err => console.log(err))
+            })
+                .then(response => this.peminjam = response.data)
+                .catch(err => console.log(err))
+        },
+        deletePeminjam(id) {
+            axios.delete(`http://localhost:8123/api/v1/peminjam/delete/${id}`, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response => {
+                console.log(response.data)
+                this.peminjam = this.peminjam.filter(peminjam => peminjam.id !== id)
+            })
+        },
+        filterPeminjam() {
+            if(this.keyword === '') {
+                return this.peminjam
+            } else {
+                axios.get(`http://localhost:8123/api/v1/peminjam/get-all/peminjam/${this.keyword}`)
+                .then(response => {
+                    this.peminjam = response.data;
+                })
+                .catch(err => console.log(err));
+            }
         }
     },
     mounted() {
@@ -61,6 +82,10 @@ th {
 td {
     padding: 20px;
     background: #eeeeee;
+}
+
+tr {
+    border: 10px solid #F1F5F9;
 }
 
 .main {

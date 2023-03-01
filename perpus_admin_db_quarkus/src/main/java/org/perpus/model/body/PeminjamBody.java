@@ -9,6 +9,7 @@ import org.perpus.entity.PeminjamEntity;
 
 public record PeminjamBody(
   String namaLengkap,
+  String nisn,
     @JsonDeserialize(converter = TimeDeserialize.class) 
   LocalDate tanggal_minjam,
   LocalDate tanggal_kembali,
@@ -17,6 +18,7 @@ public record PeminjamBody(
   public PeminjamEntity mapToPeminjamEntity() {
     var peminjam = new PeminjamEntity();
     peminjam.namaLengkap = namaLengkap;
+    peminjam.nisn = nisn;
     peminjam.tanggalMinjam = LocalDate.now();
     peminjam.tanggalKembali = peminjam.tanggalMinjam.plus(1, ChronoUnit.WEEKS);
     peminjam.jumlahBuku = jumlahBuku;

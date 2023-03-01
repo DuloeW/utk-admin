@@ -95,4 +95,13 @@ public class MessageResponse {
             .entity("{\"name\": " + name + ",\n  \t\"message\":\"NOT FOUND\"}")
             .build());
   }
+
+  public static WebApplicationException loginFaild(String email, String pass, String code) {
+    return new WebApplicationException(
+      Response
+      .status(400)
+      .entity("{\"email\": " + email + ",\n  \t\"password\": "+ pass+ " \t\"kode\":"+ code +"\" \t\"message\":\"NOT FOUND\"}")
+      .build()
+    );
+  }
 }

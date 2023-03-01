@@ -28,6 +28,10 @@ public class PeminjamEntity extends PanacheEntityBase{
     @NotNull
     public String namaLengkap;
 
+    @Column(name = "nisn")
+    @NotNull
+    public String nisn;
+
     @CreationTimestamp
     @Column(name = "tanggal_minjam")
     @NotNull

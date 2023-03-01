@@ -57,6 +57,10 @@ public class BukuEntity extends PanacheEntityBase {
         return find("judul_buku", judulLowerCase).firstResultOptional();
     }
 
+    public static Optional<BukuEntity> findBukuByCode(String kode) {
+        return find("kode_buku =? 1", kode).firstResultOptional();
+    }
+
     public static List<BukuEntity> findAllBuku() {
         return BukuEntity.listAll();
     }

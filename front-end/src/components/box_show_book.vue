@@ -3,7 +3,7 @@
         <MdBookIcon class="text-8xl"/>
         <div class="w-full h-full flex flex-col justify-between p-2">
             <h1 class="text-xl font-serif tracking-widest">Buku</h1>
-            <p class="text-[12px]">5 unit</p>
+            <p class="text-[12px]">{{ size }} unit</p>
             <RouterLink to="/detail-books" class="self-end">
                 <a href="" class="self-end text-xs tracking-[2px] px-3 py-1 bg-green-600 rounded-sm">detail..</a>
             </RouterLink>
@@ -11,6 +11,7 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
 import { RouterLink } from 'vue-router';
 import MdBookIcon from 'vue-ionicons/dist/md-book.vue'
 export default {
@@ -18,6 +19,9 @@ export default {
         return {
             RouterLink
         }
+    },
+    props: {
+        size: String
     },
     components: {
         MdBookIcon

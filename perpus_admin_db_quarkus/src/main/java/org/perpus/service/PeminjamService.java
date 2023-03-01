@@ -34,6 +34,18 @@ public class PeminjamService {
         .collect(Collectors.toList());
     }
 
+    public Response getSizePeminjam() {
+        Long size = PeminjamEntity.count();
+        return Response.ok("{\"size\":\""+ size +"\"}").build();
+    }
+
+    public List<PeminjamEntity> getListPeminjamByName(String name) {
+        return PeminjamEntity.findAllPeminjam()
+        .stream()
+        .filter(peminjam -> (peminjam.namaLengkap.toLowerCase().replaceAll("\\s", "").contains(name.toLowerCase())))
+        .collect(Collectors.toList());
+    }
+
     public Response createPeminjam(PeminjamBody body) {
         Objects.requireNonNull(body);
         if(Boolean.FALSE.equals(checkingIsExistPeminjam(body.namaLengkap()))) {
