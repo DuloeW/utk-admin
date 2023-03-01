@@ -54,7 +54,7 @@ export default {
         BackButton
     },
     methods: {
-        getPeminjam() {
+        getBook() {
             axios.get('http://localhost:8123/api/v1/buku/get-all', {
                 headers: {
                     "Content-Type": "application/json"
@@ -65,7 +65,7 @@ export default {
         },
         filterBook() {
             if (this.keyword === '') {
-                return this.books
+                return this.getBook()
             } else {
                 return axios.get(`http://localhost:8123/api/v1/buku/get-all/title/${this.keyword}`)
                     .then(response => this.books = response.data)
@@ -74,7 +74,7 @@ export default {
         }
     },
     mounted() {
-        this.getPeminjam()
+        this.getBook()
     }
 }
 </script>

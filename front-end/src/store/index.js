@@ -10,9 +10,9 @@ const store = createStore({
   getters: {},
   mutations: {
     setLoggedIn(state, isLoggedIn) {
-      state.isLoggedIn = isLoggedIn
       localStorage.setItem('email', state.email)
-      localStorage.setItem('isLoggedIn', state.isLoggedIn);
+      localStorage.setItem('isLoggedIn', isLoggedIn);
+      state.isLoggedIn = isLoggedIn;
     },
     setAdminEmail(state, email) {
       state.email = email;

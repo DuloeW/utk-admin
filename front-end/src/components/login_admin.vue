@@ -10,11 +10,11 @@
             </div>
             <div class="flex flex-col">
                 <label for="" class="text-lg">Password</label>
-                <input v-model="password" type="password" class="input bg-slate-800 p-2 text-sm text-white rounded-md">
+                <input v-model="password" type="text" class="input bg-slate-800 p-2 text-sm text-white rounded-md">
             </div>
             <div class="flex flex-col">
                 <label for="" class="text-lg">Kode</label>
-                <input v-model="kode" type="password" class="input bg-slate-800 p-2 text-sm text-white rounded-md">
+                <input v-model="kode" type="text" class="input bg-slate-800 p-2 text-sm text-white rounded-md">
             </div>
         </div>
         <div class="w-full">

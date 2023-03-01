@@ -77,7 +77,7 @@ export default {
         },
         filterBook() {
             if (this.keyword === '') {
-                return this.books
+                return this.getBuku()
             } else {
                 return axios.get(`http://localhost:8123/api/v1/buku/get-all/title/${this.keyword}`)
                     .then(response => this.books = response.data)

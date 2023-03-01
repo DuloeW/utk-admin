@@ -55,7 +55,7 @@ export default {
         },
         filterPeminjam() {
             if(this.keyword === '') {
-                return this.peminjam
+                return this.getPeminjam()
             } else {
                 axios.get(`http://localhost:8123/api/v1/peminjam/get-all/peminjam/${this.keyword}`)
                 .then(response => {
