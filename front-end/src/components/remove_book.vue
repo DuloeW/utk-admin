@@ -4,10 +4,11 @@
             <BackButton class="absolute top-0 left-0 text-base p-2 text-black m-2" />
         </RouterLink>
         <div class="p-2 w-fit flex justify-center relative mx-auto">
-            <input v-model="keyword" type="search" name="" id="" size="50"
+            <input v-model="keyword" @keydown="searchActive" placeholder="Cari buku...." type="search" name="" id="" size="50"
                 class="text-xs p-4 tracking-[1px] rounded-sm bg-slate-500 border-none outline-none text-white">
-            <button @click="filterBook()"
-                class="h-3/6 bg-blue-500 rounded-sm text-white absolute right-3 top-3 w-[15%] mt-1 mr-1">cari</button>
+            <!-- <button @click="filterBook()"
+                class="h-3/6 bg-blue-500 rounded-sm text-white absolute right-3 top-3 w-[15%] mt-1 mr-1">cari</button> -->
+                <font-awesome-icon v-if="isSearch" @click="searchNotActive" icon="fa-solid fa-xmark" class="absolute right-5 py-2 top-3.5 px-3 bg-red-600 text-center text-xl rounded-md text-white"/>
         </div>
         <table class="w-full relative">
             <tr>
@@ -51,7 +52,8 @@ export default {
             no: 1,
             isClick: false,
             keyword: '',
-            books: []
+            books: [],
+            isSearch: false
         }
     },
     methods: {
@@ -83,6 +85,15 @@ export default {
                     .then(response => this.books = response.data)
                     .catch(err => console.log(err))
             }
+        },
+        searchActive() {
+            this.isSearch = true
+            this.filterBook()
+        },
+        searchNotActive() {
+            this.isSearch = false
+            this.keyword = ''
+            this.getBuku()
         }
     },
     mounted() {
@@ -105,6 +116,10 @@ td {
 
 tr {
     border: 10px solid #F1F5F9;
+}
+
+input::placeholder {
+    letter-spacing: 5px;
 }
 
 .main {

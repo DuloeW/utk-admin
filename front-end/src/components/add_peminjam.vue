@@ -1,3 +1,5 @@
+//TODO nanti saat memilih peminjam tinggal memasukan NISN saya(kalau bisa), akan dibuatkan table siswa,
+//?dan table peminjam akan ber-relasi dengan tabel siswa
 <template>
     <div class="w-10/12 h-10/12 flex justify-center items-center relative">
         <RouterLink to="/">
@@ -10,7 +12,7 @@
             </div>
             <div class="input-data">
                 <label for="">NISN</label>
-                <input v-model="nisn" type="number" max="999999999999" min="1000000000" required>
+                <input v-model="nisn" type="number" required>
             </div>
             <div class="input-data">
                 <label for="">Tanggal Minjam</label>
@@ -32,7 +34,7 @@
             </div>
         </form>
     </div>
-</template>
+</template> 
 <script>
 import axios from 'axios';
 import { RouterLink } from 'vue-router';
@@ -57,6 +59,7 @@ export default {
         BackButton
     },
     methods: {
+        //TODO saat create di view data kurang tapi sudah create
         async createPeminjam() {
             try {
                 const response = await axios.post('http://localhost:8123/api/v1/peminjam/create', {

@@ -3,6 +3,7 @@
         <RouterLink to="/">
             <BackButton class="absolute top-0 left-0 text-base p-2 text-white m-2" />
         </RouterLink>
+        <AlertMessage v-if="someThingHappend" :message="message" :class="isWrongClass" class="absolute top-50 z-10" />
         <form class="w-full h-full p-4 overflow-hidden flex flex-col justify-center items-center">
             <div class="input-book">
                 <label for="">Judul Buku</label>
@@ -15,9 +16,15 @@
             <div class="input-book">
                 <label for="">Kategori</label>
                 <select v-model="kategori" name="" id="">
-                    <option value="pendidikan">Pendidikan</option>
-                    <option value="hiburan" selected>Hiburan</option>
-                    <option value="berita">Berita</option>
+                    <option value="pendidikan">
+                        Pendidikan
+                    </option>
+                    <option value="hiburan" selected>
+                        Hiburan
+                    </option>
+                    <option value="berita">
+                        Berita
+                    </option>
                 </select>
             </div>
             <div class="input-book">
@@ -29,7 +36,7 @@
                 <textarea v-model="deskripsi" name="" id="" cols="2" rows="3" required></textarea>
             </div>
             <div class="text-white mt-3">
-                <button @click="createBook" class="btn-kiri px-2 bg-green-700 rounded">Kirim</button>
+                <button @click.prevent="createBook" class="btn-kiri px-2 bg-green-700 rounded">Kirim</button>
                 <input type="reset" value="hapus" class="btn-kanan px-2 bg-red-700 ml-2 rounded">
             </div>
         </form>
@@ -43,6 +50,7 @@ import BackButton from '../components/icons/back_button.vue'
 import PendidikanIcon from '../components/icons/student.vue'
 import BeritaIcon from '../components/icons/news.vue'
 import GameIcon from '../components/icons/game_konsole.vue'
+import AlertMessage from './alert_message.vue';
 
 export default {
     setup() {
@@ -54,7 +62,8 @@ export default {
         BackButton,
         PendidikanIcon,
         BeritaIcon,
-        GameIcon
+        GameIcon,
+        AlertMessage
     },
     data() {
         return {
@@ -63,23 +72,55 @@ export default {
             kategori: '',
             tahunRilis: '',
             deskripsi: '',
-            kategoriInt: ''
+            kategoriInt: '',
+            someThingHappend: false,
+            message: '',
+            isWrongClass: 'bg-red-700 shadow-lg shadow-red-600',
         }
     },
     methods: {
         async createBook() {
-            try {
-                this.convertKategoriToInt()
-                const response = await axios.post('http://localhost:8123/api/v1/buku/create', {
-                    judulBuku: this.judulBuku,
-                    kodeBuku: this.kodeBuku,
-                    kategori: this.kategoriInt,
-                    tahunRilis: this.tahunRilis,
-                    deskripsi: this.deskripsi
-                });
-                console.log(response.data);
-            } catch (error) {
-                console.error(error.response.data);
+            this.convertKategoriToInt()
+            if (
+                (this.judulBuku !== '' && this.judulBuku.length > 5) &&
+                (this.kodeBuku !== '' && this.kodeBuku.length == 5) &&
+                (this.kategori !== '') &&
+                (this.kategoriInt !== '') &&
+                (this.deskripsi !== '')
+            )  {
+                try {
+                    const response = await axios.post('http://localhost:8123/api/v1/buku/create', {
+                        judulBuku: this.judulBuku,
+                        kodeBuku: this.kodeBuku,
+                        kategori: this.kategoriInt,
+                        tahunRilis: this.tahunRilis,
+                        deskripsi: this.deskripsi
+                    });
+                    this.someThingHappend = true
+                    this.message = "Succes created"
+                    this.isWrongClass = "bg-green-700 shadow-lg shadow-green-600"
+                    setTimeout(() => {
+                        this.resetContent()
+                        this.someThingHappend = false
+                        this.isWrongClass = "bg-red-700 shadow-lg shadow-red-600"
+                    }, 4000);
+                    console.log(response.data);
+                } catch (error) {
+                    console.error(error.response.data);
+                    if (error.response.status == 400) {
+                        this.someThingHappend = true;
+                        this.message = error.response.data.message
+                        setTimeout(() => {
+                            this.someThingHappend = false;
+                        }, 4000)
+                    }
+                }
+            } else {
+                this.someThingHappend = true
+                this.message = "Your input is wrong!!"
+                setTimeout(() => {
+                    this.someThingHappend = false;
+                }, 4000)
             }
         },
         convertKategoriToInt() {
@@ -97,6 +138,13 @@ export default {
                     this.kategoriInt = 2
                     break;
             }
+        },
+        resetContent() {
+            this.judulBuku = ''
+            this.kodeBuku = ''
+            this.kategori = ''
+            this.tahunRilis = ''
+            this.deskripsi = ''
         }
     }
 }

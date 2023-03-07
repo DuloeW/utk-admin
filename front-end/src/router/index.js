@@ -6,7 +6,7 @@ const auth = function() {
   return { 
     requiresAuth: true,
     beforeEnter: (to, from, next) => {
-      if (!store.state.isLoggedIn) {
+      if (!Boolean(localStorage.getItem('isLoggedIn'))) {
         next('/login')
       } else {
         next()
@@ -74,6 +74,12 @@ const router = createRouter({
       component: () => import("../views/UpdateDataBookView.vue"),
       meta: auth()
     },
+    {
+      path: '/admin-profile',
+      name: 'admin-profile',
+      component: () => import('../views/AdminProfileView.vue'),
+      meta: auth()
+    }
   ],
 });
 

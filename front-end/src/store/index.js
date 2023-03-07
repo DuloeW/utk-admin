@@ -1,4 +1,4 @@
-import {createStore} from "vuex";
+import { createStore } from "vuex";
 
 const store = createStore({
   state: {
@@ -10,9 +10,9 @@ const store = createStore({
   getters: {},
   mutations: {
     setLoggedIn(state, isLoggedIn) {
+      state.isLoggedIn = isLoggedIn;
       localStorage.setItem('email', state.email)
       localStorage.setItem('isLoggedIn', isLoggedIn);
-      state.isLoggedIn = isLoggedIn;
     },
     setAdminEmail(state, email) {
       state.email = email;
@@ -22,6 +22,11 @@ const store = createStore({
     },
     setAdminKode(state, kode) {
       state.kode = kode;
+    },
+    setLogOut(state, isLoggedIn) {
+      state.isLoggedIn = isLoggedIn;
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("email");
     },
   },
   actions: {},

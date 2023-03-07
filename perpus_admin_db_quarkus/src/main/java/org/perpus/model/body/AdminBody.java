@@ -5,7 +5,8 @@ import org.perpus.entity.AdminEntity;
 public record AdminBody(
     String email,
     String password,
-    String kode
+    String kode,
+    String namaAdmin
 ) {
 
     public AdminEntity mapToAdminEntity() {
@@ -13,6 +14,7 @@ public record AdminBody(
         admin.email = email;
         admin.password = password;
         admin.kodeAdmin = kode;
+        admin.namaAdmin = namaAdmin;
         return admin;
     }
     

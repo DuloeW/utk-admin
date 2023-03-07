@@ -5,8 +5,9 @@
         </RouterLink>
         <div class="">
             <div class="p-2 w-fit flex justify-center relative mx-auto">
-                <input v-model="keyword" type="search" name="" size="50" id="" class="text-xs p-4 tracking-[1px] rounded-sm bg-slate-500 border-none outline-none text-white">
-                <button @click="filterBook" class="h-3/6 bg-blue-500 rounded-sm text-white absolute right-3 top-3 w-[15%] mt-1 mr-1">cari</button>
+                <input  v-model="keyword" @keydown="searchActive" type="search" placeholder="Cari buku...." name="" size="50" id="" class="text-xs p-4 tracking-[1px] rounded-sm bg-slate-500 border-none outline-none text-white">
+                <!-- <button @click="filterBook" class="h-3/6 bg-blue-500 rounded-sm text-white absolute right-3 top-3 w-[15%] mt-1 mr-1">cari</button> -->
+                <font-awesome-icon v-if="isSearch" @click="searchNotActive" icon="fa-solid fa-xmark" class="absolute right-5 py-2 top-3.5 px-3 bg-red-600 text-center text-xl rounded-md text-white"/>
             </div>
         </div>
         <table class="w-full relative">
@@ -47,7 +48,8 @@ export default {
     data() {
         return {
             books: [],
-            keyword: ''
+            keyword: '',
+            isSearch: false
         }
     },
     components: {
@@ -71,9 +73,18 @@ export default {
                     .then(response => this.books = response.data)
                     .catch(err => console.log(err))
             }
+        },
+        searchActive() {
+            this.isSearch = true
+            this.filterBook()
+        },
+        searchNotActive() {
+            this.isSearch = false
+            this.keyword = ''
+            this.getBook()
         }
     },
-    mounted() {
+    mounted() { 
         this.getBook()
     }
 }
@@ -95,6 +106,9 @@ tr {
     border: 10px solid #F1F5F9;
 }
 
+input::placeholder {
+    letter-spacing: 5px;
+}
 .main {
     animation: naik 1s ease-in forwards;
 }

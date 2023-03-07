@@ -1,9 +1,10 @@
 <template>
     <div class="main w-full h-full bg-slate-100 rounded-xl overflow-y-scroll relative">
         <div class="p-2 w-fit flex justify-center relative mx-auto">
-            <input v-model="keyword" type="search" name="" id="" size="50"
+            <input  v-model="keyword" @keydown="searchActive" placeholder="Cari peminjam...." type="search" name="" id="" size="50"
                 class="text-xs p-4 tracking-[1px] rounded-sm bg-slate-500 border-none outline-none text-white">
-            <button @click="filterPeminjam" class="h-3/6 bg-blue-500 rounded-sm text-white absolute right-3 top-3 w-[15%] mt-1 mr-1">cari</button>
+            <!-- <button @click="filterPeminjam" class="h-3/6 bg-blue-500 rounded-sm text-white absolute right-3 top-3 w-[15%] mt-1 mr-1">cari</button> -->
+            <font-awesome-icon v-if="isSearch" @click="searchNotActive" icon="fa-solid fa-xmark" class="absolute right-5 py-2 top-3.5 px-3 bg-red-600 text-center text-xl rounded-md text-white"/>
         </div>
         <table class="w-full relative">
             <tr>
@@ -26,11 +27,13 @@
 </template>
 <script>
 import axios from 'axios';
+// import CancelIcon from ''
 export default {
     data() {
         return {
             peminjam: [],
-            keyword: ''
+            keyword: '',
+            isSearch: false
         }
     },
     methods: {
@@ -63,11 +66,20 @@ export default {
                 })
                 .catch(err => console.log(err));
             }
+        },
+        searchActive() {
+            this.isSearch = true
+            this.filterPeminjam()
+        },
+        searchNotActive() {
+            this.isSearch = false
+            this.keyword = ''
+            this.getPeminjam()
         }
     },
     mounted() {
         this.getPeminjam()
-    }
+    },
 }
 </script>
 
@@ -86,6 +98,10 @@ td {
 
 tr {
     border: 10px solid #F1F5F9;
+}
+
+input::placeholder {
+    letter-spacing: 5px;
 }
 
 .main {

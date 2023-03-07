@@ -17,7 +17,8 @@ export default {
     data() {
         return {
             sizeBook: '0',
-            sizePeminjam: '0'
+            sizePeminjam: '0',
+            sizeOldPeminjam : ''
         }
     },
     components: {
@@ -39,8 +40,8 @@ export default {
                     "Content-Type": "application/json"
                 }
             })
-                .then(response => this.sizePeminjam = response.data.size)
-                .catch(err => console.log(err))
+            .then(response => this.sizePeminjam = response.data.size)
+            .catch(err => console.log(err))
         }
     },
     mounted() {

@@ -34,6 +34,10 @@ public class AdminEntity extends PanacheEntityBase {
     @NotNull
     public String kodeAdmin;
 
+    @Column(name = "nama_admin")
+    @NotNull
+    public String namaAdmin;
+
     public static Optional<AdminEntity> findAdminByEmailPassAndCode(String email, String password, String code) {
        return find("email = ?1 AND password = ?2 AND kode_admin = ?3", email, password, code).firstResultOptional();
     }
