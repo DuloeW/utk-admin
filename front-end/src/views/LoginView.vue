@@ -2,7 +2,7 @@
 import Login from '../components/login_admin.vue';
 </script>
 <template>
-    <div class="w-full h-screen flex justify-center items-center bg-slate-900">
+    <div class="w-full h-screen flex justify-center items-center bg-white">
         <Login/>
     </div>
 </template>

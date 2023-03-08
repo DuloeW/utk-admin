@@ -1,83 +1,68 @@
 <template>
-    <div class="max-w-xs h-fit p-3 bg-slate-50 rounded-md w-1/3 flex flex-col items-center gap-4">
-        <div class="w-full h-1/5 flex justify-center items-center">
-            <h1 class="font-semibold text-2xl">Login</h1>
+    <div class="w-full h-screen flex justify-between items-center">
+        <div class="w-2/4 h-full grid place-items-center">
+            <div class="w-96 h-2/3 shadow-2xl rounded-2xl p-5">
+                <h1 class="font-bold text-3xl text-center tracking-widest">Login</h1>
+                <form class="w-full h-5/6 mt-4 flex flex-col gap-4">
+                    <div class="input-data">
+                        <label for="">Email</label>
+                        <input type="text">
+                    </div>
+                    <div class="input-data">
+                        <label for="">Password</label>
+                        <input type="text">
+                    </div>
+                    <div class="input-data">
+                        <label for="">Kode</label>
+                        <input type="text">
+                    </div>
+                    <input type="submit" value="Kirim" class="bg-blue-700 py-3 w-2/5 self-center mt-5 rounded-xl text-white font-bold tracking-widest">
+                </form>
+            </div>
         </div>
-        <div class="w-full h-full flex flex-col gap-5">
-            <div class="flex flex-col">
-                <label for="" class="text-lg">Email</label>
-                <input v-model="email" type="email" class="input bg-slate-800 p-2 text-sm text-white rounded-md">
+        <div class="w-2/4 h-full relative grid place-items-center">
+            <div class="mark absolute right-0 top-0 bg-blue-700 w-72 h-[500px]">
+
             </div>
-            <div class="flex flex-col">
-                <label for="" class="text-lg">Password</label>
-                <input v-model="password" type="text" class="input bg-slate-800 p-2 text-sm text-white rounded-md">
-            </div>
-            <div class="flex flex-col">
-                <label for="" class="text-lg">Kode</label>
-                <input v-model="kode" type="text" class="input bg-slate-800 p-2 text-sm text-white rounded-md">
-            </div>
-        </div>
-        <div class="w-full">
-            <button @click="loginAdmin"
-                class="w-full bg-blue-700 text-white rounded-md p-2 duration-700 hover:bg-green-700 hover:scale-95">Submit</button>
+            <PersonInLeftSide class="z-[1] mt-32"/>
         </div>
     </div>
 </template>
 <script>
-import axios from 'axios'
-import { mapMutations } from 'vuex'
+import PersonInLeftSide from './icons/stuck_at_home_brainstorming.vue';
 export default {
     data() {
         return {
-            email: '',
-            password: '',
-            kode: ''
-        }
-    },
-    methods: {
-        ...mapMutations(['setLoggedIn', 'setAdminEmail', 'setAdminPassword', 'setAdminKode']),
-        loginAdmin() {
-            const admin = {
-                email: this.email,
-                password: this.password,
-                kode: this.kode
-            }
-            axios.post(`http://localhost:8123/api/v1/admin/login`, admin)
-                .then(response => {
-                    this.setAdminEmail(admin.email);
-                    this.setAdminPassword(admin.password);
-                    this.setAdminKode(admin.kode);
-                    this.setLoggedIn(true)
-                    this.$router.push("/")
 
-                })
-                .catch(err => console.log(err))
-        },
-        test() {
-            console.log(localStorage.getItem('isLoggedIn'));
         }
     },
-    mounted() {
-        const isLoggedIn = localStorage.getItem('isLoggedIn')
-        if (isLoggedIn) {
-            this.$store.commit('setLoggedIn', true)
-        } else {
-            this.$store.commit('setLoggedIn', false)
-        }
+    components: {
+        PersonInLeftSide
     }
 }
 </script>
 <style scoped>
-.input {
-    letter-spacing: 2px;
-    transition: 1s ease-in-out;
+
+.input-data {
+    display: flex;
+    flex-direction: column;
 }
 
-.input:focus {
-    outline-width: 4px;
-    outline-color: #5c5c5c;
-    background-color: #fff;
-    color: #1c1c1c;
-    border: 4px;
+.input-data input {
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 10px 20px #e9e9e9;
 }
+
+.input-data label {
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: #2e2e2e;
+}
+
+.mark {
+    border-bottom-left-radius: 100px;
+}
+
 </style>

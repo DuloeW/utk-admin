@@ -1,241 +1,154 @@
 <template>
-    <div :class="sidebarClass" class="flex flex-col h-full max-w-[277px] bg-slate-800 p-5 relative">
-        <!-- <MenuIcon :class="iconMenuClass" @click="openSideBar" class="absolute top-2 rounded-2xl text-xl -right-20 m-2 p-4 bg-slate-500  ease-in-out duration-500 hover:bg-green-600 hover:shadow-[0_0_20px_rgba(0,0,0,0.25)] hover:shadow-green-600"/> -->
-        <div class="border-b-2 border-gray-300 text-white flex flex-col w-full">
-            <div class="w-full flex items-center justify-evenly">
-                <RouterLink to="/admin-profile">
-                    <div
-                        class="p-1 rounded-full bg-slate-500 mr-2  ease-in-out duration-500 hover:bg-purple-600 hover:shadow-[0_0_20px_rgba(0,0,0,0.25)] hover:shadow-purple-600">
-                        <AdminProfile class="text-5xl" />
-                    </div>
-                </RouterLink>
-                <RouterLink to="/admin-profile">
-                    <div
-                        class="p-2 bg-slate-500 rounded-md ease-in-out duration-500 hover:bg-purple-600 hover:shadow-[0_0_20px_rgba(0,0,0,0.25)] hover:shadow-purple-600">
-                        <h3 class="text-center text-xs tracking-widest">I Putu Bayu Gelgel Wiyantara</h3>
-                    </div>
-                </RouterLink>
-                <!-- <BackMenu @click="closeSideBar" class= "text-2xl p-1 px-2 rounded-md ease-in duration-500 bg-slate-500 hover:bg-red-600 hover:shadow-[0_0_20px_rgba(0,0,0,0.25)] hover:shadow-red-600 "/> -->
-            </div>
-            <h1 class="text-2xl">Admin Perpus Digital</h1>
-            <p class="text-xs tracking-widest my-2">SMKN 2 TABANAN</p>
+    <div class="bg-white shadow-2xl max-w-sm w-72 h-screen flex flex-col items-center p-5 relative gap-4">
+        <div class="w-full h-20 flex justify-around items-center z-[1]">
+            <img src="../assets/Picture1.png" alt="logo smk 2 tabanan" width="60" height="60">
+            <h1 class="text-xl text-center font-semibold tracking-wider">Perpustakaan Digital</h1>
         </div>
+        <div class="absolute top-0 right-0 w-36 h-24 bg-cyan-300 rounded-bl-[90px]"></div>
 
-        <div class="h-full flex flex-col items-center">
-            <div :class="home" class="box-option w-full mt-5 text-white bg-slate-600 p-2 rounded-md">
-                <RouterLink to="/" class="w-full flex items-center">
-                    <HomeIcon class="text-3xl mr-4" />
-                    <h1>Halaman Awal</h1>
+        <!--Bagian icon sidebar -->
+        <div class="w-full h-full flex flex-col border-t-4">
+            <div
+                class="w-full h-fit bg-neutral-200 border-l-8 border-blue-600 mt-7 flex gap-3 p-4 rounded-tr-xl rounded-br-xl cursor-pointer">
+                <font-awesome-icon icon="fa-solid fa-house" class="text-2xl" />
+                <h3>Halaman utama</h3>
+            </div>
+            <div @click="bukuClicked"
+                class="w-full h-fit border-l-8 border-white mt-7 flex gap-3 p-4 rounded-tr-xl cursor-pointer">
+                <font-awesome-icon icon="fa-solid fa-book" class="text-2xl" />
+                <h3>Buku</h3>
+                <font-awesome-icon icon="fa-solid fa-chevron-down" :class="arrowBookUpOrDown" class="ml-auto" />
+            </div>
+            <div v-if="isBukuClicked" class="flex flex-col">
+                <RouterLink to="/add-book">
+                    <div class="w-52 h-fit mx-auto flex gap-3 p-4 cursor-pointer">
+                        <font-awesome-icon icon="fa-solid fa-file-circle-plus" />
+                        <h4>Tambah Buku</h4>
+                    </div>
+                </RouterLink>
+                <RouterLink to="/update-book">
+                    <div class="w-52 h-fit mx-auto flex gap-3 p-4 rounded-tr-xl cursor-pointer">
+                        <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+                        <h4>Ubah Buku</h4>
+                    </div>
+                </RouterLink>
+                <RouterLink to="/delete-book">
+                    <div class="w-52 h-fit mx-auto flex gap-3 p-4 rounded-tr-xl cursor-pointer">
+                        <font-awesome-icon icon="fa-solid fa-trash-can" />
+                        <h4>Hapus Buku</h4>
+                    </div>
                 </RouterLink>
             </div>
-            <div :class="addBook" class="box-option w-full mt-5 text-white bg-slate-600 p-2 rounded-md">
-                <RouterLink to="/add-book" class="w-full flex items-center">
-                    <IconAddBook class="text-3xl mr-4" />
-                    <h1>Tambah Buku</h1>
+            <div @click="peminjamClicked"
+                class="w-full h-fit border-l-8 border-white mt-7 flex gap-3 p-4 rounded-tr-xl cursor-pointer">
+                <font-awesome-icon icon="fa-solid fa-users" class="text-2xl" />
+                <h3>Peminjam</h3>
+                <font-awesome-icon icon="fa-solid fa-chevron-down" :class="arrowPeminjamUpOrDown" class="ml-auto" />
+            </div>
+            <div v-if="isPeminjamClicked" class="flex flex-col">
+                <RouterLink to="/add-peminjam">
+                    <div class="w-52 h-fit mx-auto flex gap-3 p-4 cursor-pointer">
+                        <font-awesome-icon icon="fa-solid fa-user-plus" />
+                        <h4>Tambah Peminjam</h4>
+                    </div>
+                </RouterLink>
+                <RouterLink to="/delete-peminjam">
+                    <div class="w-52 h-fit mx-auto flex gap-3 p-4 rounded-tr-xl cursor-pointer">
+                        <font-awesome-icon icon="fa-solid fa-user-minus" />
+                        <h4>Hapus Peminjam</h4>
+                    </div>
                 </RouterLink>
             </div>
-            <div :class="addPeminjam" class="box-option w-full mt-5 text-white bg-slate-600 p-2 rounded-md">
-                <RouterLink to="/add-peminjam" class="flex items-center">
-                    <IconAddPeminjam class="text-3xl mr-4" />
-                    <h1>Tambah Peminjam</h1>
-                </RouterLink>
-            </div>
-            <div :class="updateBook" class="box-option w-full mt-5 text-white bg-slate-600 p-2 rounded-md">
-                <RouterLink to="/update-book" class="flex items-center">
-                    <IconEditBuku class="text-3xl mr-4" />
-                    <h1>Edit Buku</h1>
-                </RouterLink>
-            </div>
-            <div :class="deleteBook" class="box-option w-full mt-5 text-white bg-slate-600 p-2 rounded-md">
-                <RouterLink to="/delete-book" class="flex items-center">
-                    <IconDeleteBuku class="text-3xl mr-4" />
-                    <h1>Hapus Buku</h1>
-                </RouterLink>
-            </div>
+            <RouterLink to="/admin-profile">
+                <div
+                    class="w-full h-fit border-l-8 border-white mt-7 flex gap-3 p-4 rounded-tr-xl rounded-br-xl cursor-pointer">
+                    <font-awesome-icon icon="fa-solid fa-user" class="text-2xl" />
+                    <h3>Admin Profile</h3>
+                </div>
+            </RouterLink>
         </div>
-        <Footer class="" />
     </div>
 </template>
-
 <script>
-import IconAddBook from 'vue-ionicons/dist/ios-add.vue'
-import IconAddPeminjam from 'vue-ionicons/dist/md-person-add.vue'
-import IconEditBuku from 'vue-ionicons/dist/md-bookmarks.vue'
-import IconDeleteBuku from 'vue-ionicons/dist/md-remove.vue'
-import Footer from './footer.vue'
-import AdminProfile from 'vue-ionicons/dist/md-person.vue'
-import SettingAdmin from 'vue-ionicons/dist/md-settings.vue'
-import MenuIcon from 'vue-ionicons/dist/md-menu.vue'
-import BackMenu from 'vue-ionicons/dist/md-close.vue'
-import HomeIcon from 'vue-ionicons/dist/md-home.vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink } from 'vue-router';
 
 export default {
-    setup() {
+    data() {
         return {
-            RouterLink,
+            isBukuClicked: false,
+            isPeminjamClicked: false,
+            arrowBookUpOrDown: 'arrow-book-down',
+            arrowPeminjamUpOrDown: 'arrow-peminjam-down'
         }
     },
     components: {
-        IconAddBook,
-        IconAddPeminjam,
-        IconEditBuku,
-        IconDeleteBuku,
-        Footer,
-        AdminProfile,
-        SettingAdmin,
-        MenuIcon,
-        BackMenu,
-        HomeIcon
-    },
-    data() {
-        return {
-            isSidebarOpen: true,
-            sidebarClass: 'slide-in-left',
-            iconMenuClass: 'menu-hidden',
-            home: 'not-home',
-            addBook: 'not-a-book',
-            addPeminjam: 'not-a-peminjam',
-            updateBook: 'not-u-peminjam',
-            deleteBook: 'not-d-book'
-        }
+        RouterLink
     },
     methods: {
-        closeSideBar() {
-            this.isSidebarOpen = false
-            this.sidebarClass = 'slide-out-left'
-            this.iconMenuClass = 'menu-not-hidden'
+        bukuClicked() {
+            this.isBukuClicked = !this.isBukuClicked
+            this.isPeminjamClicked = false
+            if (this.arrowPeminjamUpOrDown != 'arrow-peminjam-down') {
+                this.arrowPeminjamUpOrDown = 'arrow-peminjam-down'
+            }
+
+            if (this.arrowBookUpOrDown != 'arrow-book-down') {
+                this.arrowBookUpOrDown = 'arrow-book-down'
+            } else {
+                this.arrowBookUpOrDown = 'arrow-book-up'
+            }
         },
-        openSideBar() {
-            this.isSidebarOpen = true;
-            this.sidebarClass = 'slide-in-left'
-            this.iconMenuClass = 'menu-hidden'
-        },
-        isHome() {
-            this.home = 'home'
-        },
-        isAddBook() {
-            this.addBook = 'a-book'
-        },
-        isAddPeminjam() {
-            this.addPeminjam = 'a-peminjam'
-        },
-        isUpdateBook() {
-            this.updateBook = 'u-update'
-        },
-        isDeleteBook() {
-            this.deleteBook = 'd-book'
+        peminjamClicked() {
+            this.isPeminjamClicked = !this.isPeminjamClicked
+            this.isBukuClicked = false
+            if (this.arrowBookUpOrDown != 'arrow-book-down') {
+                this.arrowBookUpOrDown = 'arrow-book-down'
+            }
+
+            if (this.arrowPeminjamUpOrDown != 'arrow-peminjam-down') {
+                this.arrowPeminjamUpOrDown = 'arrow-peminjam-down'
+            } else {
+                this.arrowPeminjamUpOrDown = 'arrow-peminjam-up'
+            }
         }
-    },
-    mounted() {
-        if(this.$route.fullPath === '/') {
-            this.isHome()
-        } else if (this.$route.fullPath === '/add-book') {
-            this.isAddBook()
-        } else if (this.$route.fullPath === '/add-peminjam') {
-            this.isAddPeminjam()
-        } else if (this.$route.fullPath === '/update-book') {
-            this.isUpdateBook()
-        } else if(this.$route.fullPath === '/delete-book') {
-            this.isDeleteBook()
-        }
+
     }
 }
-
 </script>
-
 <style scoped>
-.box-option {
-    transition: .5s ease-in-out;
+.arrow-book-up {
+    animation: up .1s ease-in-out forwards;
 }
 
-.box-option:hover {
-    background: #12a2db;
-    box-shadow: 0px 0px 20px #12a2db;
+.arrow-book-down {
+    animation: down .2s ease-in-out forwards;
 }
 
-.home {
-    background: #12a2db;
-    box-shadow: 0px 0px 20px #12a2db;
+.arrow-peminjam-up {
+    animation: up .1s ease-in-out forwards;
 }
 
-.a-book {
-    background: #12a2db;
-    box-shadow: 0px 0px 20px #12a2db;
+.arrow-peminjam-down {
+    animation: down .2s ease-in-out forwards;
 }
 
-.a-peminjam {
-    background: #12a2db;
-    box-shadow: 0px 0px 20px #12a2db;
-}
-
-.u-update {
-    background: #12a2db;
-    box-shadow: 0px 0px 20px #12a2db;
-}
-
-.d-book {
-    background: #12a2db;
-    box-shadow: 0px 0px 20px #12a2db;
-}
-
-.slide-in-left {
-    animation: slide-in-left .5s ease-in-out forwards;
-}
-
-.slide-out-left {
-    animation: slide-out-left .5s ease-in-out forwards;
-}
-
-@keyframes slide-in-left {
+@keyframes up {
     from {
-        transform: translateX(-100%);
+        transform: rotate(0deg);
     }
 
     to {
-        transform: translateX(0);
+        transform: rotate(180deg);
     }
 }
 
-@keyframes slide-out-left {
+@keyframes down {
     from {
-        transform: translateX(0);
+        transform: rotate(180deg);
     }
 
     to {
-        transform: translateX(-100%);
-    }
-}
-
-.menu-hidden {
-    animation: menu-hidden .5s ease-in-out forwards;
-}
-
-.menu-not-hidden {
-    animation: menu-not-hidden .5s ease-in-out forwards;
-}
-
-@keyframes menu-hidden {
-    from {
-        opacity: 1;
-        display: block;
-    }
-
-    to {
-        opacity: 0;
-        display: none;
-    }
-}
-
-@keyframes menu-not-hidden {
-    form {
-        opacity: 0;
-        display: none;
-    }
-
-    to {
-        opacity: 1;
-        display: block;
+        transform: rotate(0deg);
     }
 }
 </style>
